@@ -29,10 +29,11 @@ jobs:
 
       - name: Run AI Guardrail & Security Tests
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'mock-key' }}
         run: pytest tests/test_security_guardrails.py -v
 
       - name: Run DeepEval Model Evaluations
+        if: env.OPENAI_API_KEY != ''
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: pytest tests/test_llm_evals.py -v
